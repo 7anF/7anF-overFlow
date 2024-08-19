@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>The app</div>;
+  return <h1 className="flex-center h1-bold">The app</h1>;
 }
