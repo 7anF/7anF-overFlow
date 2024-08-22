@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import Theme from "./Theme";
 import MobileNav from "./MobileNav";
-import GlobalSearch from "./search/GlobalSearch";
+import GlobalSearch from "../search/GlobalSearch";
 
 const Navbar = () => {
   return (
@@ -36,8 +36,9 @@ const Navbar = () => {
             }}
           />
         </SignedIn>
-
-        <MobileNav />
+        <div className="sm:hidden flex-center">
+          <MobileNav />
+        </div>
       </div>
     </nav>
   );
