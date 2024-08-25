@@ -1,7 +1,7 @@
 import React from "react";
-import RenderTag from "./RenderTag";
+import RenderTag from "../shared/RenderTag";
 import Link from "next/link";
-import Metric from "./Metric";
+import Metric from "../shared/Metric";
 import { formatNumbers, getTimestamp } from "@/lib/utils";
 
 interface Props {

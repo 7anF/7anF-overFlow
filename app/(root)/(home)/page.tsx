@@ -6,7 +6,7 @@ import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
 import React from "react";
 import NoResult from "@/components/shared/NoResult";
-import QuestionCard from "@/components/shared/QuestionCard";
+import QuestionCard from "@/components/cards/QuestionCard";
 
 const questions = [
   {
