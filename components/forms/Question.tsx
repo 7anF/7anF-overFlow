@@ -20,6 +20,7 @@ import { useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Badge } from "../ui/badge";
 import Image from "next/image";
+import { createQuestion } from "@/lib/actions/question.action";
 
 const type: any = "create"; // Must coming from the Props
 
@@ -38,13 +39,15 @@ const Question = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof QuestionsSchema>) {
+  async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
     setIsSubmitting(true); // It will diallwed us to click the button
 
     try {
       // Make an async call to our API -> create question
       // Must contain all form data
       // Navigate to our home page
+
+      await createQuestion({});
     } catch (err) {
     } finally {
       setIsSubmitting(false);
