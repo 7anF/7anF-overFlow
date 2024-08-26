@@ -24,22 +24,6 @@ const QuestionSchema = new Schema<IQuestion>({
   createdAt: { type: Date, default: Date.now },
 });
 
-// const UserSchema = new Schema<IUser>({
-//   firstName: { type: String, required: true },
-//   lastName: { type: String, required: true },
-//   username: { type: String, required: true },
-//   email: { type: String, required: true },
-//   password: { type: String, required: true },
-// });
-
-// interface IUser {
-//   firstName: string;
-//   lastName: string;
-//   username: string;
-//   email: string;
-//   password: string;
-// }
-
 const Question = models.Question || model("Question", QuestionSchema);
 
 export default Question;
