@@ -3,8 +3,33 @@
 import Question from "@/database/questionModel";
 import { connectToDatabase } from "../mongoose";
 import Tag from "@/database/tagModel";
+import User from "@/database/userModel";
+import { CreateQuestionParams, GetAnswersParams } from "./shared.types";
+import { revalidatePath } from "next/cache";
 
-export async function createQuestion(params: any) {
+export async function getQuestions(params: any) {
+  try {
+    connectToDatabase();
+
+    const questions = await Question.find({})
+      .populate({
+        path: "tags",
+        model: Tag,
+      })
+      .populate({
+        path: "author",
+        model: User,
+      })
+      .sort({ createdAt: -1 });
+
+    return questions;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function createQuestion(params: CreateQuestionParams) {
   try {
     connectToDatabase();
 
@@ -15,6 +40,7 @@ export async function createQuestion(params: any) {
       title,
       content,
       author,
+      path,
     });
 
     const tagDocument = [];
@@ -36,5 +62,7 @@ export async function createQuestion(params: any) {
 
     // Create an interaction record for the user's ask_question action
     // Then we want to increament author's reputation bt +5 for each question
+
+    revalidatePath(path);
   } catch (error) {}
 }

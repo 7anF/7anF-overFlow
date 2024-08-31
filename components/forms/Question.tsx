@@ -55,6 +55,7 @@ const Question = ({ userId }: Props) => {
         content: values.explanation,
         tags: values.tags,
         author: JSON.parse(userId),
+        path: pathname,
       });
 
       // Navigate to our home page
