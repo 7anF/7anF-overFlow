@@ -3,9 +3,9 @@
 import Question from "@/database/questionModel";
 import { connectToDatabase } from "../mongoose";
 import Tag from "@/database/tagModel";
-import User from "@/database/userModel";
-import { CreateQuestionParams, GetAnswersParams } from "./shared.types";
+import { CreateQuestionParams } from "./shared.types";
 import { revalidatePath } from "next/cache";
+import User from "@/database/userModel";
 
 export async function getQuestions(params: any) {
   try {
@@ -64,5 +64,8 @@ export async function createQuestion(params: CreateQuestionParams) {
     // Then we want to increament author's reputation bt +5 for each question
 
     revalidatePath(path);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
