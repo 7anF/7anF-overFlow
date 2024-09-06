@@ -60,6 +60,8 @@ const Question = ({ userId }: Props) => {
       // Navigate to our home page
       router.push("/");
     } catch (err) {
+      console.log(err);
+      throw err;
     } finally {
       setIsSubmitting(false);
     }
