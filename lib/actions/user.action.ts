@@ -69,7 +69,7 @@ export async function deleteUser(params: DeleteUserParams) {
 
     // TODO: delete user answers, comments, etc.
 
-    const deletsUser = await User.findByIdAndDelete(user._id);
+    const deleteUser = await User.findByIdAndDelete(user._id);
 
     return deleteUser;
   } catch (error) {}
