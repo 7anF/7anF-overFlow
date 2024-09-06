@@ -87,7 +87,8 @@ const Question = ({ userId }: Props) => {
 
         if (!field.value.includes(tagValue as never)) {
           form.setValue("tags", [...field.value, tagValue]);
-          (tagInput.value = ""), form.clearErrors("tags");
+          tagInput.value = "";
+          form.clearErrors("tags");
         }
       } else {
         form.trigger();
