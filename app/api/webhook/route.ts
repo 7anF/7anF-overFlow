@@ -68,7 +68,8 @@ export async function POST(req: Request) {
       email: email_addresses[0].email_address,
       picture: image_url,
     });
-
+    console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
+    console.log("Webhook body:", body);
     return NextResponse.json({ message: "OK", user: mongoUser });
   }
 
