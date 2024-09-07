@@ -4,7 +4,6 @@ import User from "@/database/user.model";
 import { connectToDatabase } from "../mongoose";
 import { GetAllTagsParams, GetTopInteractedTagsParams } from "./shared.types";
 import Tag from "@/database/tag.model";
-import Question from "@/database/question.model";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
