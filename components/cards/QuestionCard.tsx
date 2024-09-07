@@ -53,7 +53,7 @@ const HomePgaeCard = ({
 
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
         <Metric
-          imgUlr="/assets/icons/avatar.svg"
+          imgUlr={author.picture}
           alt="user"
           value={author.name}
           title={` - asked ${getTimestamp(createdAt)}`}
