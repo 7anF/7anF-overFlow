@@ -2,8 +2,8 @@ import { Schema, models, model, Document } from "mongoose";
 
 interface IAnswer extends Document {
   content: string;
-  questions: Schema.Types.ObjectId[];
-  author: Schema.Types.ObjectId[];
+  questions: Schema.Types.ObjectId;
+  author: Schema.Types.ObjectId;
   upvotes: Schema.Types.ObjectId[];
   downvotes: Schema.Types.ObjectId[];
   createdAt: Date;
@@ -11,8 +11,8 @@ interface IAnswer extends Document {
 
 const AnswerSchema = new Schema<IAnswer>({
   content: { type: String, required: true },
-  questions: [{ type: Schema.Types.ObjectId, ref: "Question", required: true }],
-  author: [{ type: Schema.Types.ObjectId, ref: "Users", required: true }],
+  questions: { type: Schema.Types.ObjectId, ref: "Question", required: true },
+  author: { type: Schema.Types.ObjectId, ref: "User", required: true },
   upvotes: [{ type: Schema.Types.ObjectId, ref: "User" }],
   downvotes: [{ type: Schema.Types.ObjectId, ref: "User" }],
   createdAt: { type: Date, default: Date.now },

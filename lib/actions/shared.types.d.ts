@@ -6,7 +6,7 @@ import { IUser } from "@/mongodb";
 export interface CreateAnswerParams {
   content: string;
   author: string; // User ID
-  question: string; // Question ID
+  questions: string; // Question ID
   path: string;
 }
 

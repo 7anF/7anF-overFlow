@@ -7,11 +7,20 @@ import { formatNumbers, getTimestamp } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { auth } from "@clerk/nextjs/server";
+import AllAnswers from "@/components/shared/AllAnswers";
+import { getUserById } from "@/lib/actions/user.action";
 
 const page = async ({ params }: { params: { id: string } }) => {
-  const questionId = params.id;
+  const { userId: clerkId } = auth();
 
-  const question = await getQuestionById({ questionId });
+  let mongoUser;
+
+  if (clerkId) {
+    mongoUser = await getUserById({ userId: clerkId });
+  }
+
+  const question = await getQuestionById({ questionId: params.id });
 
   return (
     <>
@@ -76,7 +85,16 @@ const page = async ({ params }: { params: { id: string } }) => {
         ))}
       </div>
 
-      <Answer />
+      <AllAnswers
+        questionId={question._id}
+        userId={JSON.stringify(mongoUser._id)}
+        totalAnswers={question.answers.length}
+      />
+
+      <Answer
+        questionId={question._id}
+        authorId={JSON.stringify(mongoUser._id)}
+      />
     </>
   );
 };

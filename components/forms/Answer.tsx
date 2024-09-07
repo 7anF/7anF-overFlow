@@ -17,11 +17,19 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useTheme } from "@/context/ThemeProvider";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import { createAnswer } from "@/lib/actions/answer.action";
+import { usePathname } from "next/navigation";
 
-const Answer = () => {
+interface Props {
+  questionId: string;
+  authorId: string;
+}
+
+const Answer = ({ questionId, authorId }: Props) => {
   const editorRef = useRef(null);
   const { mode } = useTheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const pathname = usePathname();
   const form = useForm<z.infer<typeof AnswerSchema>>({
     resolver: zodResolver(AnswerSchema),
     defaultValues: {
@@ -29,11 +37,35 @@ const Answer = () => {
     },
   });
 
-  const handleCreateAnswer = () => {};
+  const handleCreateAnswer = async (values: z.infer<typeof AnswerSchema>) => {
+    setIsSubmitting(true);
+
+    try {
+      await createAnswer({
+        questions: questionId,
+        author: JSON.parse(authorId),
+        content: values.answer,
+        path: pathname,
+      });
+
+      form.reset();
+
+      if (editorRef.current) {
+        const editor = editorRef.current as any;
+
+        editor.setContent("");
+      }
+    } catch (error) {
+      console.log(error);
+      throw error;
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div>
-      <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
+      <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center sm:gap-2 mt-6">
         <h4 className="paragrapgh-semibold text-dark400_light800">
           Write your answer here
         </h4>
