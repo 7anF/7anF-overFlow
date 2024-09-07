@@ -30,7 +30,7 @@ export async function getAllUsers(params: GetAllUsersParams) {
   try {
     connectToDatabase();
 
-    //const { page = 1, pageSize = 20, filter, searchQuery } = params;
+    // const { page = 1, pageSize = 20, filter, searchQuery } = params;
 
     const Users = await User.find({}).sort({ joinedAt: -1 });
 
