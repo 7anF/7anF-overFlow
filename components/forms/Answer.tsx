@@ -131,13 +131,13 @@ const Answer = ({ questionId, authorId }: Props) => {
                       content_style:
                         "body { font-family:Inter; font-size:16px }",
                       skin: `${mode === "dark" ? "oxide-dark" : "oxide"}`,
-                      content_css: `${mode === "dark" ? "dark" : "light"}`,
+                      content_css: `${mode === "dark" ? "dark" : "default"}`,
                     }}
                   />
                 </FormControl>
                 <FormDescription className="body-regular mt-2.5 text-light-500">
                   Introduce the problem and expand on what you put in the title.
-                  Minimum 20 characters.
+                  Minimum 100 characters.
                 </FormDescription>
                 <FormMessage className="text-red-500" />
               </FormItem>
