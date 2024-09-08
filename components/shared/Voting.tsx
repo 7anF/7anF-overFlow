@@ -1,9 +1,11 @@
 "use client";
 
+import { upvoteAnswer, downvoteAnswer } from "@/lib/actions/answer.action";
 import {
   downvoteQuestion,
   upvoteQuestion,
 } from "@/lib/actions/question.action";
+import { toggleSaveQuestion } from "@/lib/actions/user.action";
 import { formatNumbers } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -34,7 +36,17 @@ const Voting = ({
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleSave = () => {};
+  const handleSave = async () => {
+    if (!userId) {
+      return;
+    }
+    await toggleSaveQuestion({
+      questionId: JSON.parse(itemId),
+      userId: JSON.parse(userId),
+      hasSaved: hasSaved!,
+      path: pathname,
+    });
+  };
 
   const handleVote = async (action: string) => {
     if (!userId) {
@@ -51,13 +63,13 @@ const Voting = ({
           path: pathname,
         });
       } else if (type === "Answer") {
-        // await upvoteAnswer({
-        //   questionId: itemId,
-        //   userId,
-        //   hasupVoted,
-        //   hasdownVoted,
-        //   path: pathname,
-        // });
+        await upvoteAnswer({
+          answerId: JSON.parse(itemId),
+          userId: JSON.parse(userId),
+          hasupVoted,
+          hasdownVoted,
+          path: pathname,
+        });
       }
 
       return;
@@ -73,13 +85,13 @@ const Voting = ({
           path: pathname,
         });
       } else if (type === "Answer") {
-        // await downvoteAnswer({
-        //   questionId: itemId,
-        //   userId,
-        //   hasupVoted,
-        //   hasdownVoted,
-        //   path: pathname,
-        // });
+        await downvoteAnswer({
+          answerId: JSON.parse(itemId),
+          userId: JSON.parse(userId),
+          hasupVoted,
+          hasdownVoted,
+          path: pathname,
+        });
       }
 
       return;
@@ -122,15 +134,17 @@ const Voting = ({
           </div>
         </div>
       </div>
-
-      <Image
-        src={`${hasSaved ? "/assets/icons/star-filled.svg" : "/assets/icons/star-red.svg"}`}
-        width={18}
-        height={18}
-        alt="star"
-        className="cursor-pointer"
-        onClick={handleSave}
-      />
+      {type === "Question" && (
+        <Image
+          src={`${hasSaved ? "/assets/icons/star-filled.svg" : "/assets/icons/star-red.svg"}`}
+          width={18}
+          height={18}
+          alt="star"
+          className="cursor-pointer"
+          onClick={handleSave}
+        />
+      )}
+      )
     </div>
   );
 };

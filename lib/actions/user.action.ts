@@ -6,10 +6,13 @@ import {
   CreateUserParams,
   DeleteUserParams,
   GetAllUsersParams,
+  GetSavedQuestionsParams,
+  ToggleSaveQuestionParams,
   UpdateUserParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
+import Answer from "@/database/answer.model";
 
 export async function getUserById(params: any) {
   try {
@@ -97,6 +100,37 @@ export async function deleteUser(params: DeleteUserParams) {
     const deletedUser = await User.findByIdAndDelete(user._id);
 
     return deletedUser;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
+  try {
+    connectToDatabase();
+
+    const { userId, questionId, hasSaved, path } = params;
+
+    let updateQuery = {};
+
+    if (hasSaved) {
+      updateQuery = { $pull: { saved: questionId } };
+    } else {
+      updateQuery = {
+        $push: { saved: questionId },
+      };
+    }
+
+    const user = await User.findByIdAndUpdate(userId, updateQuery, {
+      new: true,
+    });
+
+    if (!user) {
+      throw new Error("User not found!");
+    }
+
+    revalidatePath(path);
   } catch (error) {
     console.log(error);
     throw error;
