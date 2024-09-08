@@ -44,7 +44,7 @@ const page = async ({ params }: { params: { id: string } }) => {
           </Link>
           <div className="flex justify-end">
             <Voting
-              type="question"
+              type="Question"
               itemId={JSON.stringify(question._id)}
               userId={JSON.stringify(mongoUser._id)}
               upvotes={question.upvotes.length}
@@ -104,7 +104,7 @@ const page = async ({ params }: { params: { id: string } }) => {
       />
 
       <Answer
-        questionId={question._id}
+        questionId={JSON.stringify(question._id)}
         authorId={JSON.stringify(mongoUser._id)}
       />
     </>

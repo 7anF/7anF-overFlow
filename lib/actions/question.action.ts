@@ -10,7 +10,6 @@ import { revalidatePath } from "next/cache";
 import Tag from "@/database/tag.model";
 import User from "@/database/user.model";
 import Question from "@/database/question.model";
-import path from "path";
 
 export async function getQuestions(params: any) {
   try {
@@ -134,7 +133,7 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
   }
 }
 
-export async function downvoteQuerstion(params: QuestionVoteParams) {
+export async function downvoteQuestion(params: QuestionVoteParams) {
   try {
     connectToDatabase();
 
