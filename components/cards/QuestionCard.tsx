@@ -16,7 +16,7 @@ interface Props {
     name: string;
     picture: string;
   };
-  upvotes: number;
+  upvotes: string[];
   views: number;
   answers: Array<object>;
   createdAt: Date;
@@ -64,7 +64,7 @@ const HomePgaeCard = ({
         <Metric
           imgUlr="/assets/icons/like.svg"
           alt="answers"
-          value={formatNumbers(upvotes)}
+          value={formatNumbers(upvotes.length)}
           title=" Votes"
           textStyle="small-medium text-dark400_light800"
         />
