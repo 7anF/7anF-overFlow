@@ -46,11 +46,11 @@ const page = async ({ params }: { params: { id: string } }) => {
             <Voting
               type="Question"
               itemId={JSON.stringify(question._id)}
-              userId={JSON.stringify(mongoUser._id)}
+              userId={JSON.stringify(mongoUser?._id)}
               upvotes={question.upvotes.length}
-              hasupVoted={question.upvotes.includes(mongoUser._id)}
+              hasupVoted={question.upvotes.includes(mongoUser?._id)}
               downvotes={question.downvotes.length}
-              hasdownVoted={question.downvotes.includes(mongoUser._id)}
+              hasdownVoted={question.downvotes.includes(mongoUser?._id)}
               hasSaved={mongoUser?.saved.includes(question._id)}
             />
           </div>
@@ -84,7 +84,9 @@ const page = async ({ params }: { params: { id: string } }) => {
         />
       </div>
 
-      <ParseHTML data={question.content} />
+      <div className="text-dark100_light900">
+        <ParseHTML data={question.content} />
+      </div>
 
       <div className="mt-8 flex flex-wrap gap-2">
         {question.tags.map((tag: any) => (
@@ -99,13 +101,13 @@ const page = async ({ params }: { params: { id: string } }) => {
 
       <AllAnswers
         questionId={question._id}
-        userId={mongoUser._id}
+        userId={mongoUser?._id}
         totalAnswers={question.answers.length}
       />
 
       <Answer
         questionId={JSON.stringify(question._id)}
-        authorId={JSON.stringify(mongoUser._id)}
+        authorId={JSON.stringify(mongoUser?._id)}
       />
     </>
   );
