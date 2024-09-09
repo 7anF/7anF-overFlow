@@ -23,6 +23,7 @@ export async function getQuestions(params: any) {
       .populate({
         path: "author",
         model: User,
+        select: "_id clerkId name picture",
       })
       .sort({ createdAt: -1 });
 

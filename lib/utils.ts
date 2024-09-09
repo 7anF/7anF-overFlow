@@ -39,3 +39,20 @@ export const formatNumbers = (upvotes: number): string => {
     return upvotes.toString();
   }
 };
+
+export const formatDateToMonthYear = (dateString: string): string => {
+  const date = new Date(dateString);
+
+  // Use Intl.DateTimeFormat to format the date
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+  };
+  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(date);
+
+  return formattedDate;
+};
+
+// Example usage:
+const dateStr = "2024-09-07T08:31:13.081Z";
+console.log(formatDateToMonthYear(dateStr)); // Output: "September 2024"

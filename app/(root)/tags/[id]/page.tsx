@@ -3,7 +3,6 @@ import React from "react";
 import NoResult from "@/components/shared/NoResult";
 import QuestionCard from "@/components/cards/QuestionCard";
 import { getQuestionByTagId } from "@/lib/actions/tag.action";
-import { IQuestion } from "@/database/question.model";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const results = await getQuestionByTagId({ tagId: params.id });
