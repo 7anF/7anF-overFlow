@@ -3,6 +3,8 @@ import RenderTag from "../shared/RenderTag";
 import Link from "next/link";
 import Metric from "../shared/Metric";
 import { formatNumbers, getTimestamp } from "@/lib/utils";
+import { SignedIn } from "@clerk/nextjs";
+import EditDeleteAction from "../shared/EditDeleteAction";
 
 interface Props {
   _id: string;
@@ -17,6 +19,7 @@ interface Props {
     name: string;
     picture: string;
   };
+  clerkId?: string | null;
   upvotes: string[];
   views: number;
   answers: Array<object>;
@@ -32,7 +35,10 @@ const HomePgaeCard = ({
   views,
   answers,
   createdAt,
+  clerkId,
 }: Props) => {
+  const showActionButtons = clerkId && clerkId === author.clerkId;
+
   return (
     <div className="card-wrapper p-9 sm:px-11 rounded-[10px]">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -41,6 +47,13 @@ const HomePgaeCard = ({
             {title}
           </h3>
         </Link>
+
+        <SignedIn>
+          {showActionButtons && (
+            <EditDeleteAction type="Question" itemId={JSON.stringify(_id)} />
+          )}
+        </SignedIn>
+
         <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
           {getTimestamp(createdAt)}
         </span>
