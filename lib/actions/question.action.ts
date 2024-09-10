@@ -4,6 +4,7 @@ import { connectToDatabase } from "../mongoose";
 import {
   CreateQuestionParams,
   DeleteQuestionParams,
+  EditQuestionParams,
   GetQuestionByIdParams,
   QuestionVoteParams,
 } from "./shared.types";
@@ -184,6 +185,44 @@ export async function DeleteQuestion(params: DeleteQuestionParams) {
       { question: questionId },
       { $pull: { questions: questionId } }
     );
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getQuestionToEdit(params: GetQuestionByIdParams) {
+  try {
+    connectToDatabase();
+
+    const { questionId } = params;
+
+    const question = await Question.findById(questionId);
+    const tags = await Tag.find({ questions: questionId }).select("name");
+
+    console.log(tags);
+
+    return { question, tags };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function editQuestion(params: EditQuestionParams) {
+  try {
+    connectToDatabase();
+
+    const { questionId, title, content, path } = params;
+
+    const question = await Question.findByIdAndUpdate(questionId, {
+      title,
+      content,
+    });
+
+    if (!question) throw new Error("Question not found");
 
     revalidatePath(path);
   } catch (error) {
