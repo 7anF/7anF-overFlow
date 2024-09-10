@@ -37,13 +37,15 @@ const Question = ({ userId, type, questionDetailes, questionId }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const questionParsedDetailed = JSON.parse(questionDetailes || "");
-  const tags = questionParsedDetailed.tags.map((tag: any) => tag.name);
+  const questionParsedDetailed =
+    questionDetailes && JSON.parse(questionDetailes || "");
+  const tags =
+    questionDetailes && questionParsedDetailed.tags.map((tag: any) => tag.name);
 
   const form = useForm<z.infer<typeof QuestionsSchema>>({
     resolver: zodResolver(QuestionsSchema),
     defaultValues: {
-      title: questionParsedDetailed.title || "",
+      title: questionDetailes ? questionParsedDetailed.title : "",
       explanation: "",
       tags: tags || [],
     },
@@ -93,7 +95,7 @@ const Question = ({ userId, type, questionDetailes, questionId }: Props) => {
       e.preventDefault();
 
       const tagInput = e.target as HTMLInputElement;
-      const tagValue = tagInput.value.trim();
+      const tagValue = tagInput.value.toUpperCase().trim();
 
       if (tagValue !== "") {
         if (tagValue.length > 15) {
@@ -168,9 +170,7 @@ const Question = ({ userId, type, questionDetailes, questionId }: Props) => {
                   onBlur={field.onBlur}
                   onEditorChange={(content) => field.onChange(content)}
                   initialValue={
-                    questionParsedDetailed.content
-                      ? questionParsedDetailed.content
-                      : ""
+                    questionDetailes ? questionParsedDetailed.content : ""
                   }
                   init={{
                     height: 350,
@@ -264,7 +264,7 @@ const Question = ({ userId, type, questionDetailes, questionId }: Props) => {
         />
         <Button
           type="submit"
-          className="primary-gradient w-fit !text-light900"
+          className="primary-gradient w-fit !text-light-900"
           disabled={isSubmitting}
         >
           {isSubmitting ? (

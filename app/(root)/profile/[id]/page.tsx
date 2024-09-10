@@ -1,6 +1,4 @@
-import AnswerCard from "@/components/cards/AnswerCard";
 import Stats from "@/components/shared/Stats";
-import QuestionCard from "@/components/cards/QuestionCard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getUserInfo } from "@/lib/actions/user.action";
@@ -72,7 +70,7 @@ const page = async ({ params, searchParams }: URLProps) => {
         <div className="flex justify-end max-sm:mb-5 max-sm:w-full sm:mt-3">
           <SignedIn>
             {userId === userInfo.user.clerkId && (
-              <Link href={`/profile/edit`}>
+              <Link href={`/profile/edit/`}>
                 <Button className="background-light800_dark400 border light-border paragraph-medium text-dark300_light900 flex-center px-4 py-3 min-h-[46px] min-w-[175px]">
                   Edit Profile
                 </Button>

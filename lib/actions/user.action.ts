@@ -17,6 +17,7 @@ import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
 import Answer from "@/database/answer.model";
+import { clerkClient } from "@clerk/nextjs/server";
 
 export async function getUserById(params: any) {
   try {
@@ -70,6 +71,9 @@ export async function updateUser(params: UpdateUserParams) {
     await User.findOneAndUpdate({ clerkId }, updateData, {
       new: true,
     });
+
+    // for updating Clerk user info also
+    await clerkClient.users.updateUser(clerkId, updateData);
 
     revalidatePath(path);
   } catch (error) {
@@ -161,7 +165,11 @@ export async function getAllSavedQuestion(params: GetSavedQuestionsParams) {
       },
       populate: [
         { path: "tags", model: Tag, select: "_id name" },
-        { path: "author", model: User, select: "_id clerkId name picture" },
+        {
+          path: "author",
+          model: User,
+          select: "_id clerkId name picture",
+        },
       ],
     });
 
