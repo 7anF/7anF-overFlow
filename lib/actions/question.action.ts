@@ -6,6 +6,7 @@ import {
   DeleteQuestionParams,
   EditQuestionParams,
   GetQuestionByIdParams,
+  GetQuestionsParams,
   QuestionVoteParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
@@ -14,6 +15,7 @@ import User from "@/database/user.model";
 import Question from "@/database/question.model";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/iteraction.model";
+import path from "path";
 
 export async function getQuestions(params: any) {
   try {
@@ -225,6 +227,24 @@ export async function editQuestion(params: EditQuestionParams) {
     if (!question) throw new Error("Question not found");
 
     revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getHotQuestions(params: GetQuestionsParams) {
+  try {
+    connectToDatabase();
+
+    const questions = await Question.find({})
+      .sort({
+        views: -1,
+        upvotes: -1,
+      })
+      .limit(5);
+
+    return questions;
   } catch (error) {
     console.log(error);
     throw error;
