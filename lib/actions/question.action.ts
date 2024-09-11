@@ -21,9 +21,11 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { searchQuery, filter } = params;
+    const { searchQuery, filter, page = 1, pageSize = 10 } = params;
 
     const query: FilterQuery<typeof Question> = {};
+
+    const skipAmount = pageSize * (page - 1);
 
     if (searchQuery) {
       query.$or = [
@@ -52,9 +54,14 @@ export async function getQuestions(params: GetQuestionsParams) {
         model: User,
         select: "_id clerkId name picture",
       })
+      .skip(skipAmount)
+      .limit(pageSize)
       .sort(sortOptions);
 
-    return questions;
+    const totalQuestions = await Question.countDocuments(query);
+    const isNext = totalQuestions > skipAmount + questions.length;
+
+    return { questions, isNext };
   } catch (error) {
     console.log(error);
     throw error;
