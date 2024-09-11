@@ -8,6 +8,7 @@ import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
 import Voting from "./Voting";
 import { SearchParamsProps } from "@/types";
+import Pagination from "./Pagination";
 
 interface Props extends SearchParamsProps {
   questionId: string;
@@ -21,7 +22,11 @@ const AllAnswers = async ({
   totalAnswers,
   searchParams,
 }: Props) => {
-  const result = await getAnswers({ questionId, filter: searchParams.filter });
+  const results = await getAnswers({
+    questionId,
+    filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
+  });
 
   return (
     <div className="mt-11">
@@ -32,7 +37,7 @@ const AllAnswers = async ({
       </div>
 
       <div>
-        {result.answers.map((answer) => (
+        {results.answers.map((answer) => (
           <article key={answer._id} className="light-border border-b py-10">
             <div className="flex items-center justify-center">
               <div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2 sm:justify-start w-full">
@@ -78,6 +83,13 @@ const AllAnswers = async ({
             </div>
           </article>
         ))}
+      </div>
+
+      <div className="mt-8">
+        <Pagination
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={results.isNext}
+        />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import UserCard from "@/components/cards/UserCard";
 import Filters from "@/components/shared/Filters";
+import Pagination from "@/components/shared/Pagination";
 import SearchLocally from "@/components/shared/search/SearchLocally";
 import { UserFilters } from "@/constants/filters";
 import { getAllUsers } from "@/lib/actions/user.action";
@@ -8,9 +9,10 @@ import Link from "next/link";
 import React from "react";
 
 const page = async ({ searchParams }: SearchParamsProps) => {
-  const Users = await getAllUsers({
+  const results = await getAllUsers({
     searchQuery: searchParams.q,
     filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
   });
 
   return (
@@ -30,8 +32,8 @@ const page = async ({ searchParams }: SearchParamsProps) => {
         />
       </div>
       <section className="mt-12 flex flex-wrap gap-4">
-        {Users.length > 0 ? (
-          Users.map((user) => (
+        {results.Users.length > 0 ? (
+          results.Users.map((user) => (
             <UserCard
               key={user._id}
               _id={user._id}
@@ -50,6 +52,13 @@ const page = async ({ searchParams }: SearchParamsProps) => {
           </div>
         )}
       </section>
+
+      <div className="mt-8">
+        <Pagination
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={results.isNext}
+        />
+      </div>
     </>
   );
 };

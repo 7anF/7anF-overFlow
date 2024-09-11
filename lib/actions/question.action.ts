@@ -54,9 +54,9 @@ export async function getQuestions(params: GetQuestionsParams) {
         model: User,
         select: "_id clerkId name picture",
       })
+      .sort(sortOptions)
       .skip(skipAmount)
-      .limit(pageSize)
-      .sort(sortOptions);
+      .limit(pageSize);
 
     const totalQuestions = await Question.countDocuments(query);
     const isNext = totalQuestions > skipAmount + questions.length;
