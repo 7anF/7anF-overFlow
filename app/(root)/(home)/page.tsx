@@ -13,6 +13,7 @@ import { SearchParamsProps } from "@/types";
 const Home = async ({ searchParams }: SearchParamsProps) => {
   const results = await getQuestions({
     searchQuery: searchParams.q,
+    filter: searchParams.filter,
   });
 
   return (
@@ -43,7 +44,7 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
         />
       </div>
 
-      <HomeFilters />
+      <HomeFilters route="/" />
       <div className="mt-11 flex w-full flex-col gap-6">
         {results.length > 0 ? (
           results.map((question) => (

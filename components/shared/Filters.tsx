@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Select,
   SelectTrigger,
@@ -9,6 +9,8 @@ import {
   SelectGroup,
   SelectItem,
 } from "@/components/ui/select";
+import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 interface Props {
   filters: { name: string; value: string }[];
@@ -17,6 +19,50 @@ interface Props {
 }
 
 const Filters = ({ filters, otherClasses, containerClasses }: Props) => {
+  // const router = useRouter();
+  // const pathname = usePathname();
+  // const searchParams = useSearchParams();
+
+  // const query = searchParams.get("filter");
+
+  // const [filter, setFilter] = useState(query || "");
+
+  // useEffect(() => {
+  //   const delayDebounceFn = setTimeout(() => {
+  //     if (filter) {
+  //       const newUrl = formUrlQuery({
+  //         params: searchParams.toString(),
+  //         key: "filter",
+  //         value: filter,
+  //       });
+
+  //       router.push(newUrl, { scroll: false });
+  //     } else {
+  //       if (pathname === route) {
+  //         const newUrl = removeKeysFromQuery({
+  //           params: searchParams.toString(),
+  //           keys: ["filter"],
+  //         });
+
+  //         router.push(newUrl, { scroll: false });
+  //       }
+  //     }
+  //   }, 300);
+
+  //   return () => clearTimeout(delayDebounceFn);
+  // }, [filter, router, pathname, query]);
+
+  // const active = filter;
+  // const ToggleFilter = (filter: string) => {
+  //   if (active === filter) {
+  //     setFilter("");
+  //   } else {
+  //     setFilter(filter);
+  //   }
+  // };
+
+  // console.log(active);
+
   return (
     <div className={`relative ${containerClasses}`}>
       <Select>

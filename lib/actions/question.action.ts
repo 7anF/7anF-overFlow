@@ -21,7 +21,7 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { searchQuery } = params;
+    const { searchQuery, filter } = params;
 
     const query: FilterQuery<typeof Question> = {};
 
@@ -30,6 +30,16 @@ export async function getQuestions(params: GetQuestionsParams) {
         { title: { $regex: new RegExp(searchQuery, "i") } },
         { content: { $regex: new RegExp(searchQuery, "i") } },
       ];
+    }
+
+    let sortOptions = {};
+
+    if (filter === "newest") {
+      sortOptions = { createdAt: -1 };
+    } else if (filter === "frequent") {
+      sortOptions = { views: -1 };
+    } else if (filter === "unanswered") {
+      query.answers = { $size: 0 };
     }
 
     const questions = await Question.find(query)
@@ -42,7 +52,7 @@ export async function getQuestions(params: GetQuestionsParams) {
         model: User,
         select: "_id clerkId name picture",
       })
-      .sort({ createdAt: -1 });
+      .sort(sortOptions);
 
     return questions;
   } catch (error) {

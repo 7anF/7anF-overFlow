@@ -38,7 +38,7 @@ export async function getAllUsers(params: GetAllUsersParams) {
   try {
     connectToDatabase();
 
-    const { searchQuery } = params;
+    const { searchQuery, filter } = params;
 
     const query: FilterQuery<typeof User> = {};
 
@@ -49,7 +49,17 @@ export async function getAllUsers(params: GetAllUsersParams) {
       ];
     }
 
-    const Users = await User.find(query).sort({ joinedAt: -1 });
+    let sortOptions = {};
+
+    if (filter === "newest") {
+      sortOptions = { createdAt: -1 };
+    } else if (filter === "frequent") {
+      sortOptions = { views: -1 };
+    } else if (filter === "unanswered") {
+      query.answers = { $size: 0 };
+    }
+
+    const Users = await User.find(query).sort(sortOptions);
 
     return Users;
   } catch (error) {
