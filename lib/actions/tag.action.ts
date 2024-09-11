@@ -36,7 +36,15 @@ export async function getAllTags(params: GetAllTagsParams) {
   try {
     connectToDatabase();
 
-    const tags = await Tag.find({});
+    const { searchQuery } = params;
+
+    const query: FilterQuery<typeof Tag> = {};
+
+    if (searchQuery) {
+      query.$or = [{ name: { $regex: new RegExp(searchQuery, "i") } }];
+    }
+
+    const tags = await Tag.find(query);
 
     if (!tags) throw new Error("User not found!");
 
@@ -52,7 +60,7 @@ export async function getQuestionByTagId(params: GetQuestionsByTagIdParams) {
     connectToDatabase();
     const { tagId, searchQuery } = params;
 
-    const tagFilter: FilterQuery<ITag> = { _id: tagId };
+    const tagFilter: FilterQuery<typeof Tag> = { _id: tagId };
 
     const tag = await Tag.findOne(tagFilter).populate({
       path: "questions",

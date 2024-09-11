@@ -3,9 +3,13 @@ import React from "react";
 import NoResult from "@/components/shared/NoResult";
 import QuestionCard from "@/components/cards/QuestionCard";
 import { getQuestionByTagId } from "@/lib/actions/tag.action";
+import { URLProps } from "@/types";
 
-const Page = async ({ params }: { params: { id: string } }) => {
-  const results = await getQuestionByTagId({ tagId: params.id });
+const Page = async ({ params, searchParams }: URLProps) => {
+  const results = await getQuestionByTagId({
+    tagId: params.id,
+    searchQuery: searchParams.q,
+  });
 
   return (
     <>
@@ -15,9 +19,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
       <div className="mt-11 w-full">
         <SearchLocally
-          route="/"
+          route={`/tags/${params.id}`}
           iconPosition="left"
-          placeholder="Search by tag name..."
+          placeholder="Search by tag questions..."
           imgSrc="/assets/icons/search.svg"
           otherClasses="flex-1"
         />
