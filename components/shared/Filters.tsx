@@ -19,53 +19,32 @@ interface Props {
 }
 
 const Filters = ({ filters, otherClasses, containerClasses }: Props) => {
-  // const router = useRouter();
-  // const pathname = usePathname();
-  // const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  // const query = searchParams.get("filter");
+  const query = searchParams.get("filter");
 
-  // const [filter, setFilter] = useState(query || "");
+  const [filter, setFilter] = useState(query || "");
 
-  // useEffect(() => {
-  //   const delayDebounceFn = setTimeout(() => {
-  //     if (filter) {
-  //       const newUrl = formUrlQuery({
-  //         params: searchParams.toString(),
-  //         key: "filter",
-  //         value: filter,
-  //       });
+  useEffect(() => {
+    if (filter) {
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: "filter",
+        value: filter,
+      });
 
-  //       router.push(newUrl, { scroll: false });
-  //     } else {
-  //       if (pathname === route) {
-  //         const newUrl = removeKeysFromQuery({
-  //           params: searchParams.toString(),
-  //           keys: ["filter"],
-  //         });
-
-  //         router.push(newUrl, { scroll: false });
-  //       }
-  //     }
-  //   }, 300);
-
-  //   return () => clearTimeout(delayDebounceFn);
-  // }, [filter, router, pathname, query]);
-
-  // const active = filter;
-  // const ToggleFilter = (filter: string) => {
-  //   if (active === filter) {
-  //     setFilter("");
-  //   } else {
-  //     setFilter(filter);
-  //   }
-  // };
-
-  // console.log(active);
+      router.push(newUrl, { scroll: false });
+    }
+  }, [filter]);
 
   return (
     <div className={`relative ${containerClasses}`}>
-      <Select>
+      <Select
+        onValueChange={(value) => setFilter(value)}
+        defaultValue={filter || ""}
+      >
         <SelectTrigger
           className={`${otherClasses} body-regular light-border background-light800_dark300 text-dark500_light700 border py-2.5 px-5 w-full`}
         >

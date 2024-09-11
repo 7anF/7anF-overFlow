@@ -12,6 +12,7 @@ export interface CreateAnswerParams {
 
 export interface GetAnswersParams {
   questionId: string;
+  filter?: string;
   sortBy?: string;
   page?: number;
   pageSize?: number;

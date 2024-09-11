@@ -51,12 +51,12 @@ export async function getAllUsers(params: GetAllUsersParams) {
 
     let sortOptions = {};
 
-    if (filter === "newest") {
-      sortOptions = { createdAt: -1 };
-    } else if (filter === "frequent") {
-      sortOptions = { views: -1 };
-    } else if (filter === "unanswered") {
-      query.answers = { $size: 0 };
+    if (filter === "new_users") {
+      sortOptions = { joinedAt: -1 };
+    } else if (filter === "old_users") {
+      sortOptions = { joinedAt: 1 };
+    } else if (filter === "top_contributors") {
+      sortOptions = { reputation: -1 };
     }
 
     const Users = await User.find(query).sort(sortOptions);
@@ -168,7 +168,7 @@ export async function getAllSavedQuestion(params: GetSavedQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { clerkId, searchQuery } = params;
+    const { clerkId, searchQuery, filter } = params;
 
     const query: FilterQuery<typeof Question> = {};
 
@@ -179,11 +179,25 @@ export async function getAllSavedQuestion(params: GetSavedQuestionsParams) {
       ];
     }
 
+    let sortOptions = {};
+
+    if (filter === "most_recent") {
+      sortOptions = { createdAt: -1 };
+    } else if (filter === "oldest") {
+      sortOptions = { createdAt: 1 };
+    } else if (filter === "most_voted") {
+      sortOptions = { upvotes: -1 };
+    } else if (filter === "most_viewed") {
+      sortOptions = { views: -1 };
+    } else if (filter === "most_answered") {
+      sortOptions = { answers: -1 };
+    }
+
     const user = await User.findOne({ clerkId }).populate({
       path: "saved",
       match: query,
       options: {
-        sort: { createAt: -1 },
+        sort: sortOptions,
       },
       populate: [
         { path: "tags", model: Tag, select: "_id name" },

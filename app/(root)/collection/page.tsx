@@ -16,6 +16,7 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
   const results = await getAllSavedQuestion({
     clerkId: userId,
     searchQuery: searchParams.q,
+    filter: searchParams.filter,
   });
 
   return (

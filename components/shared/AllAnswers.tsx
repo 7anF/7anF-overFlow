@@ -7,15 +7,21 @@ import Image from "next/image";
 import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
 import Voting from "./Voting";
+import { SearchParamsProps } from "@/types";
 
-interface Props {
+interface Props extends SearchParamsProps {
   questionId: string;
   userId: string;
   totalAnswers: number;
 }
 
-const AllAnswers = async ({ questionId, userId, totalAnswers }: Props) => {
-  const result = await getAnswers({ questionId });
+const AllAnswers = async ({
+  questionId,
+  userId,
+  totalAnswers,
+  searchParams,
+}: Props) => {
+  const result = await getAnswers({ questionId, filter: searchParams.filter });
 
   return (
     <div className="mt-11">
