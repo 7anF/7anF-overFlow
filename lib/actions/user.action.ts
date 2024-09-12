@@ -271,7 +271,7 @@ export async function getUserQuestions(params: GetUserStatsParams) {
 
     const userQuestions = await Question.find({ author: userId })
       .limit(pageSize)
-      .sort({ views: -1, upvotes: -1 })
+      .sort({ createdAt: -1, views: -1, upvotes: -1 })
       .skip(skipAmount)
       .populate("tags", "_id name")
       .populate("author", "_id clerkId name picture");
@@ -296,9 +296,9 @@ export async function getUserAnswers(params: GetUserStatsParams) {
     const totalAnswers = await Answer.countDocuments({ author: userId });
 
     const userAnswer = await Answer.find({ author: userId })
+      .sort({ createdAt: -1, views: -1, upvotes: -1 })
       .skip(skipAmount)
       .limit(pageSize)
-      .sort({ upvotes: -1 })
       .populate("author", "_id clerkId name picture")
       .populate("questions", "_id title");
 

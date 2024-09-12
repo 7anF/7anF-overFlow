@@ -11,6 +11,8 @@ import {
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import Interaction from "@/database/iteraction.model";
+import User from "@/database/user.model";
+import path from "path";
 
 export async function createAnswer(params: CreateAnswerParams) {
   try {
@@ -24,8 +26,21 @@ export async function createAnswer(params: CreateAnswerParams) {
       questions,
     });
 
-    await Question.findByIdAndUpdate(questions, {
+    const question = await Question.findByIdAndUpdate(questions, {
       $push: { answers: newAnswer._id },
+    });
+
+    await Interaction.create({
+      user: author,
+      action: "answer",
+      question,
+      answer: newAnswer._id,
+      tags: question.tags,
+    });
+
+    // Increment author's reputation by +10
+    await User.findByIdAndUpdate(author, {
+      $inc: { reputation: 10 },
     });
 
     revalidatePath(path);
@@ -91,13 +106,25 @@ export async function upvoteAnswer(params: AnswerVoteParams) {
       updateQuery = { $addToSet: { upvotes: userId } };
     }
 
-    const question = await Answer.findByIdAndUpdate(answerId, updateQuery, {
+    const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, {
       new: true,
     });
 
-    if (!question) {
+    if (!answer) {
       throw new Error("Answer not found!");
     }
+
+    /* Increment author's reputation by +1 for upvoting answer and if 
+      it's notUpVoted answer then we will decrement by -1 */
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasupVoted ? -1 : 1 },
+    });
+
+    /* Increment author's reputation by +5 for receiving upvoting answer and if 
+        it's receiving notUpVoted answer then we will decrement by -5 */
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasupVoted ? -5 : 5 },
+    });
 
     revalidatePath(path);
   } catch (error) {
@@ -125,13 +152,24 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
       updateQuery = { $addToSet: { downvotes: userId } };
     }
 
-    const question = await Answer.findByIdAndUpdate(answerId, updateQuery, {
+    const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, {
       new: true,
     });
 
-    if (!question) {
+    if (!answer) {
       throw new Error("Answer not found!");
     }
+    /* Increment author's reputation by +1 for downVoted answer and if 
+      it's notDownVoted answer then we will decrement by -1 */
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasdownVoted ? -1 : 1 },
+    });
+
+    /* Increment author's reputation by +5 for receiving notDownVoted answer and if 
+          it's receiving downVoted answer then we will decrement by -5 */
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasdownVoted ? 5 : -5 },
+    });
 
     revalidatePath(path);
   } catch (error) {

@@ -125,7 +125,15 @@ export async function createQuestion(params: CreateQuestionParams) {
     });
 
     // Create an interaction record for the user's ask_question action
-    // Then we want to increament author's reputation bt +5 for each question
+    await Interaction.create({
+      user: author,
+      action: "ask_question",
+      question: question._id,
+      tags: tagDocument,
+    });
+
+    // Then we want to increament author's reputation bt +10 for each question
+    await User.findByIdAndUpdate(author, { $inc: { reputation: 10 } });
 
     revalidatePath(path);
   } catch (error) {
@@ -161,6 +169,17 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
       throw new Error("Question not found!");
     }
 
+    /* Increment author's reputation by +1 for upvoting question and if 
+      it's notUpVoted question then we will decrement by -1 */
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasupVoted ? -1 : 1 },
+    });
+    /* Increment author's reputation by +5 for receiving upvoting question and if 
+        it's receiving notUpVoted question then we will decrement by -5 */
+    await User.findByIdAndUpdate(question.author, {
+      $inc: { reputation: hasupVoted ? -5 : 5 },
+    });
+
     revalidatePath(path);
   } catch (error) {
     console.log(error);
@@ -194,6 +213,17 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     if (!question) {
       throw new Error("Question not found!");
     }
+    /* Increment author's reputation by +1 for downvoting question and if 
+      it's notDownVoted question then we will decrement by -1 */
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasupVoted ? -1 : 1 },
+    });
+
+    /* Increment author's reputation by +5 for receiving notDownVoted question and if 
+      it's receiving downVoted question then we will decrement by -5 */
+    await User.findByIdAndUpdate(question.author, {
+      $inc: { reputation: hasdownVoted ? 5 : -5 },
+    });
 
     revalidatePath(path);
   } catch (error) {
