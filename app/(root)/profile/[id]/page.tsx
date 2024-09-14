@@ -12,11 +12,9 @@ import ProfileMetric from "@/components/shared/ProfileMetric";
 import QuestionTab from "@/components/shared/QuestionTab";
 import { URLProps } from "@/types";
 import AnswerTab from "@/components/shared/AnswerTab";
-
 const page = async ({ params, searchParams }: URLProps) => {
   const { userId } = auth();
   const userInfo = await getUserInfo({ userId: params.id });
-
   return (
     <>
       <div className="flex max-sm:flex-col-reverse justify-between items-start gap-5">
@@ -28,7 +26,6 @@ const page = async ({ params, searchParams }: URLProps) => {
             alt="profile picture"
             className="rounded-full object-cover"
           />
-
           <div className="mt-3">
             <h1 className="h1-bold text-dark100_light900">
               {userInfo.user.name}
@@ -58,7 +55,6 @@ const page = async ({ params, searchParams }: URLProps) => {
                 title={`Joined ${formatDateToMonthYear(userInfo.user.joinedAt)}`}
               />
             </div>
-
             {userInfo.user.bio && (
               <div className="mt-8 paragraph-regular text-dark400_light800">
                 <p>{userInfo.user.bio}</p>
@@ -66,7 +62,6 @@ const page = async ({ params, searchParams }: URLProps) => {
             )}
           </div>
         </div>
-
         <div className="flex justify-end max-sm:mb-5 max-sm:w-full sm:mt-3">
           <SignedIn>
             {userId === userInfo.user.clerkId && (
@@ -79,18 +74,14 @@ const page = async ({ params, searchParams }: URLProps) => {
           </SignedIn>
         </div>
       </div>
-
       <Stats
+        reputation={userInfo.reputation}
         totalQuestions={userInfo.totalQuestion}
         totalAnswers={userInfo.totalAnswers}
+        badges={userInfo.badgeCounts}
       />
-
       <div className="mt-10 flex gap-10">
-        <Tabs
-          defaultValue="top-posts"
-          className="
-        flex-1"
-        >
+        <Tabs defaultValue="top-posts" className=" flex-1">
           <TabsList className="background-light800_dark400 min-h-[42px] p-1">
             <TabsTrigger value="top-posts" className="tab">
               Top Posts
@@ -122,5 +113,4 @@ const page = async ({ params, searchParams }: URLProps) => {
     </>
   );
 };
-
 export default page;
