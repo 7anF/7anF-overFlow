@@ -12,7 +12,6 @@ import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import Interaction from "@/database/iteraction.model";
 import User from "@/database/user.model";
-import path from "path";
 
 export async function createAnswer(params: CreateAnswerParams) {
   try {
