@@ -40,14 +40,25 @@ const EditDeleteAction = ({ type, itemId }: Props) => {
         />
       )}
 
-      <Image
-        src="/assets/icons/trash.svg"
-        alt="Delete"
-        width={14}
-        height={14}
-        className="cursor-pointer object-contain"
-        onClick={handleDelete}
-      />
+      {type === "Question" ? (
+        <Image
+          src="/assets/icons/trash.svg"
+          alt="Delete"
+          width={14}
+          height={14}
+          className="cursor-pointer object-contain"
+          onClick={handleDelete}
+        />
+      ) : (
+        <Image
+          src="/assets/icons/trash.svg"
+          alt="Delete"
+          width={16}
+          height={16}
+          className="cursor-pointer object-contain"
+          onClick={handleDelete}
+        />
+      )}
     </div>
   );
 };

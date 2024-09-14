@@ -85,7 +85,7 @@ const page = async ({ params, searchParams }: URLProps) => {
         />
       </div>
 
-      <div className="text-dark100_light900">
+      <div className="markdown w-full min-w-full">
         <ParseHTML data={question.content} />
       </div>
 

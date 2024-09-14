@@ -53,7 +53,7 @@ const HomeFilters = ({ route }: { route: string }) => {
           onClick={() => {
             ToggleFilter(item.value);
           }}
-          className={`body-medium rounded-lg px-6 py-3 capitalize shadow-none ${active === item.value ? "bg-primary-100 text-primary-500" : "bg-light-800 text-light-500 dark:text-light-500 dark:bg-dark-300"}`}
+          className={`body-medium rounded-lg px-6 py-3 capitalize shadow-none ${active === item.value ? "bg-primary-100 text-primary-500 hover:bg-primary-100 dark:bg-dark-400" : "bg-light-800 text-light-500 dark:text-light-500 dark:bg-dark-300 hover:text-primary-500 dark:hover:text-primary-500"}`}
         >
           {item.name}
         </Button>

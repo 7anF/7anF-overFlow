@@ -75,27 +75,29 @@ const HomePgaeCard = ({
           isAuthor
           textStyle="body-medium text-dark400_light700"
         />
-        <Metric
-          imgUlr="/assets/icons/like.svg"
-          alt="answers"
-          value={formatNumbers(upvotes.length)}
-          title=" Votes"
-          textStyle="small-medium text-dark400_light800"
-        />
-        <Metric
-          imgUlr="/assets/icons/message.svg"
-          alt="Upvotes"
-          value={formatNumbers(answers.length)}
-          title=" Answers"
-          textStyle="small-medium text-dark400_light800"
-        />
-        <Metric
-          imgUlr="/assets/icons/eye.svg"
-          alt="eye"
-          value={formatNumbers(views)}
-          title=" Views"
-          textStyle="small-medium text-dark400_light800"
-        />
+        <div className="flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start">
+          <Metric
+            imgUlr="/assets/icons/like.svg"
+            alt="answers"
+            value={formatNumbers(upvotes.length)}
+            title=" Votes"
+            textStyle="small-medium text-dark400_light800"
+          />
+          <Metric
+            imgUlr="/assets/icons/message.svg"
+            alt="Upvotes"
+            value={formatNumbers(answers.length)}
+            title=" Answers"
+            textStyle="small-medium text-dark400_light800"
+          />
+          <Metric
+            imgUlr="/assets/icons/eye.svg"
+            alt="eye"
+            value={formatNumbers(views)}
+            title=" Views"
+            textStyle="small-medium text-dark400_light800"
+          />
+        </div>
       </div>
     </div>
   );

@@ -10,7 +10,11 @@ const Layout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  return <main className="flex-center min-h-screen w-full">{children}</main>;
+  return (
+    <main className="flex-center min-h-screen w-full dark:bg-auth-dark dark:bg-center dark:bg-cover bg-auth-light bg-center bg-cover">
+      {children}
+    </main>
+  );
 };
 
 export default Layout;
