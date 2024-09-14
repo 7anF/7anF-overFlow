@@ -214,16 +214,17 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     if (!question) {
       throw new Error("Question not found!");
     }
-    /* Increment author's reputation by +1 for downvoting question and if 
+
+    /* Increment author's reputation by +1 for downvoting question and if
       it's notDownVoted question then we will decrement by -1 */
     await User.findByIdAndUpdate(userId, {
       $inc: { reputation: hasupVoted ? -1 : 1 },
     });
 
-    /* Increment author's reputation by +5 for receiving notDownVoted question and if 
+    /* Increment author's reputation by +5 for receiving notDownVoted question and if
       it's receiving downVoted question then we will decrement by -5 */
     await User.findByIdAndUpdate(question.author, {
-      $inc: { reputation: hasdownVoted ? 5 : -5 },
+      $inc: { reputation: hasdownVoted ? 0 : -5 },
     });
 
     revalidatePath(path);
