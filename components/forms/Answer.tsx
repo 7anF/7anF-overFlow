@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useRef, useState } from "react";
 import {
   Form,
@@ -19,29 +18,21 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { createAnswer } from "@/lib/actions/answer.action";
 import { usePathname } from "next/navigation";
-import { toast } from "../hooks/use-toast";
 interface Props {
   questionId: string;
   authorId: string;
-  question: string;
 }
-
-const Answer = ({ questionId, authorId, question }: Props) => {
+const Answer = ({ questionId, authorId }: Props) => {
   const editorRef = useRef(null);
   const { mode } = useTheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmittingAi, setIsSubmittingAi] = useState(false);
   const pathname = usePathname();
   const form = useForm<z.infer<typeof AnswerSchema>>({
     resolver: zodResolver(AnswerSchema),
-    defaultValues: {
-      answer: "",
-    },
+    defaultValues: { answer: "" },
   });
-
   const handleCreateAnswer = async (values: z.infer<typeof AnswerSchema>) => {
     setIsSubmitting(true);
-
     try {
       await createAnswer({
         questions: JSON.parse(questionId),
@@ -49,12 +40,9 @@ const Answer = ({ questionId, authorId, question }: Props) => {
         content: values.answer,
         path: pathname,
       });
-
       form.reset();
-
       if (editorRef.current) {
         const editor = editorRef.current as any;
-
         editor.setContent("");
       }
     } catch (error) {
@@ -64,69 +52,26 @@ const Answer = ({ questionId, authorId, question }: Props) => {
       setIsSubmitting(false);
     }
   };
-
-  const generateAiAnswer = async () => {
-    if (!authorId) {
-      return toast({
-        title: "Please log in",
-        description: "You must be logged in to perform this action",
-        variant: "destructive",
-      });
-    }
-
-    setIsSubmittingAi(true);
-
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`,
-        {
-          method: "POST",
-          body: JSON.stringify({ question }),
-        }
-      );
-
-      const aiAnswer = await response.json();
-      const formattedAnswer = aiAnswer.reply.replace(/\n/g, "<br />");
-
-      if (editorRef.current) {
-        const editor = editorRef.current as any;
-        editor.setContent(formattedAnswer);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsSubmittingAi(false);
-    }
-  };
-
   return (
     <div>
       <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center sm:gap-2 mt-6">
-        <h4 className="paragraph-semibold text-dark400_light800">
+        <h4 className="paragrapgh-semibold text-dark400_light800">
           Write your answer here
         </h4>
-
         <Button
           className="btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none border dark:primary-text-gradient"
-          onClick={generateAiAnswer}
+          onClick={() => {}}
         >
-          {isSubmittingAi ? (
-            <>Generating...</>
-          ) : (
-            <>
-              <Image
-                src="/assets/icons/stars.svg"
-                width={12}
-                height={12}
-                alt="starts"
-                className="object-contain"
-              />
-              Generate an AI Answer
-            </>
-          )}
+          <Image
+            src="/assets/icons/stars.svg"
+            width={12}
+            height={12}
+            alt="starts"
+            className="object-contain"
+          />
+          Generate an AI Answer
         </Button>
       </div>
-
       <Form {...form}>
         <form
           className="mt-6 flex w-full flex-col gap-10"
@@ -185,7 +130,6 @@ const Answer = ({ questionId, authorId, question }: Props) => {
               </FormItem>
             )}
           />
-
           <div className="flex justify-end">
             <Button
               type="submit"
@@ -200,5 +144,4 @@ const Answer = ({ questionId, authorId, question }: Props) => {
     </div>
   );
 };
-
 export default Answer;
