@@ -19,6 +19,7 @@ import Tag from "@/database/tag.model";
 import Answer from "@/database/answer.model";
 import { clerkClient } from "@clerk/nextjs/server";
 import { BadgeCriteriaType } from "@/types";
+import { assignBadges } from "../utils";
 
 export async function getUserById(params: any) {
   try {
@@ -277,8 +278,11 @@ export async function getUserInfo(params: GetUserByIdParams) {
         type: "TOTAL_VIEWS" as BadgeCriteriaType,
         count: questionViews?.totalViews || 0,
       },
-    ]; // @ts-ignore
+    ];
+
+    // @ts-ignore
     const badgeCounts = assignBadges({ criteria });
+
     return {
       user,
       totalQuestion,
