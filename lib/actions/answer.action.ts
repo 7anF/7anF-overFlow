@@ -12,7 +12,6 @@ import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import Interaction from "@/database/iteraction.model";
 import User from "@/database/user.model";
-import path from "path";
 
 export async function createAnswer(params: CreateAnswerParams) {
   try {
@@ -182,7 +181,7 @@ export async function DeleteAnswer(params: DeleteAnswerParams) {
   try {
     connectToDatabase();
 
-    const { answerId, path } = params;
+    const { answerId, path, author } = params;
 
     const answer = await Answer.findById(answerId);
 
@@ -196,6 +195,17 @@ export async function DeleteAnswer(params: DeleteAnswerParams) {
       { $pull: { answers: answerId } }
     );
     await Interaction.deleteMany({ answer: answerId });
+
+    await Interaction.create({
+      user: author,
+      action: "delete_answer",
+      answer: answer._id,
+    });
+
+    // Increment author's reputation by +10
+    await User.findByIdAndUpdate(author, {
+      $inc: { reputation: -10 },
+    });
 
     revalidatePath(path);
   } catch (error) {

@@ -9,9 +9,10 @@ import React from "react";
 interface Props {
   type: string;
   itemId: string;
+  author: string;
 }
 
-const EditDeleteAction = ({ type, itemId }: Props) => {
+const EditDeleteAction = ({ type, itemId, author }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -21,9 +22,17 @@ const EditDeleteAction = ({ type, itemId }: Props) => {
 
   const handleDelete = async () => {
     if (type === "Question") {
-      await DeleteQuestion({ questionId: JSON.parse(itemId), path: pathname });
+      await DeleteQuestion({
+        questionId: JSON.parse(itemId),
+        author: JSON.parse(author),
+        path: pathname,
+      });
     } else if (type === "Answer") {
-      await DeleteAnswer({ answerId: JSON.parse(itemId), path: pathname });
+      await DeleteAnswer({
+        answerId: JSON.parse(itemId),
+        author: JSON.parse(author),
+        path: pathname,
+      });
     }
   };
 

@@ -9,8 +9,8 @@ import {
   SelectGroup,
   SelectItem,
 } from "@/components/ui/select";
-import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { formUrlQuery } from "@/lib/utils";
+import { useSearchParams, useRouter } from "next/navigation";
 
 interface Props {
   filters: { name: string; value: string }[];
@@ -20,7 +20,6 @@ interface Props {
 
 const Filters = ({ filters, otherClasses, containerClasses }: Props) => {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const query = searchParams.get("filter");

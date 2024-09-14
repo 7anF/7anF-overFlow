@@ -29,6 +29,7 @@ export interface AnswerVoteParams {
 export interface DeleteAnswerParams {
   answerId: string;
   path: string;
+  author: string;
 }
 
 export interface SearchParams {
@@ -83,6 +84,7 @@ export interface QuestionVoteParams {
 export interface DeleteQuestionParams {
   questionId: string;
   path: string;
+  author: string;
 }
 
 export interface EditQuestionParams {

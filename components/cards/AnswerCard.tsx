@@ -17,6 +17,7 @@ interface Props {
   clerkId: string | null | undefined;
   upvotes: string[];
   createdAt: Date;
+  answerId: string;
 }
 
 const AnswerCard = ({
@@ -26,6 +27,7 @@ const AnswerCard = ({
   upvotes,
   createdAt,
   clerkId,
+  answerId,
 }: Props) => {
   const showActionButtons = clerkId && clerkId === author.clerkId;
 
@@ -40,7 +42,11 @@ const AnswerCard = ({
 
         <SignedIn>
           {showActionButtons && (
-            <EditDeleteAction type="Answer" itemId={JSON.stringify(_id)} />
+            <EditDeleteAction
+              type="Answer"
+              author={JSON.stringify(author)}
+              itemId={JSON.stringify(answerId)}
+            />
           )}
         </SignedIn>
 

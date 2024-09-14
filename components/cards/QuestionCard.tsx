@@ -50,7 +50,11 @@ const HomePgaeCard = ({
 
         <SignedIn>
           {showActionButtons && (
-            <EditDeleteAction type="Question" itemId={JSON.stringify(_id)} />
+            <EditDeleteAction
+              type="Question"
+              author={JSON.stringify(author)}
+              itemId={JSON.stringify(_id)}
+            />
           )}
         </SignedIn>
 

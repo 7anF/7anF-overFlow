@@ -237,7 +237,7 @@ export async function DeleteQuestion(params: DeleteQuestionParams) {
   try {
     connectToDatabase();
 
-    const { questionId, path } = params;
+    const { questionId, path, author } = params;
 
     await Question.deleteOne({ _id: questionId });
     await Answer.deleteMany({ questions: questionId });
@@ -246,6 +246,16 @@ export async function DeleteQuestion(params: DeleteQuestionParams) {
       { question: questionId },
       { $pull: { questions: questionId } }
     );
+
+    // Create an interaction record for the user's ask_question action
+    await Interaction.create({
+      user: author,
+      action: "delete_question",
+      question: questionId,
+    });
+
+    // Then we want to increament author's reputation bt +10 for each question
+    await User.findByIdAndUpdate(author, { $inc: { reputation: -10 } });
 
     revalidatePath(path);
   } catch (error) {

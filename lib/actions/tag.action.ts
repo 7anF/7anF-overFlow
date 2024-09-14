@@ -10,7 +10,6 @@ import {
 import Tag from "@/database/tag.model";
 import Question from "@/database/question.model";
 import { FilterQuery } from "mongoose";
-import { skip } from "node:test";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
@@ -22,11 +21,13 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
 
     if (!user) throw new Error("User not found!");
 
-    return [
-      { _id: "1", name: "Next" },
-      { _id: "2", name: "JS" },
-      { _id: "3", name: "React" },
-    ];
+    const popularTags = await Tag.aggregate([
+      { $project: { name: 1, numberOfQuestions: { $size: "$questions" } } },
+      { $sort: { numberOfQuestions: -1 } }, // desinding
+      { $limit: 3 },
+    ]);
+
+    return popularTags;
   } catch (error) {
     console.log(error);
     throw error;
