@@ -12,6 +12,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import { Toaster } from "@/components/ui/toaster";
+import { toast } from "../hooks/use-toast";
 
 interface Props {
   type: string;
@@ -39,7 +41,11 @@ const Voting = ({
 
   const handleSave = async () => {
     if (!userId) {
-      return;
+      return toast({
+        title: "Please log in",
+        description: "You must be logged in to perform this action",
+        className: "z-10",
+      });
     }
     await toggleSaveQuestion({
       questionId: JSON.parse(itemId),
@@ -51,7 +57,11 @@ const Voting = ({
 
   const handleVote = async (action: string) => {
     if (!userId) {
-      return;
+      return toast({
+        title: "Please log in",
+        description: "You must be logged in to perform this action",
+        className: "z-10",
+      });
     }
 
     if (action === "upvote") {
@@ -72,8 +82,6 @@ const Voting = ({
           path: pathname,
         });
       }
-
-      return;
     }
 
     if (action === "downvote") {
@@ -94,8 +102,6 @@ const Voting = ({
           path: pathname,
         });
       }
-
-      return;
     }
   };
 
