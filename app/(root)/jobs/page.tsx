@@ -1,6 +1,7 @@
 import JobCard from "@/components/cards/JobCard";
 import JobsFilter from "@/components/jobs/JobsFilter";
 import Pagination from "@/components/shared/Pagination";
+import React from "react";
 
 import {
   fetchCountries,

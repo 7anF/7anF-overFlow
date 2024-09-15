@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 import { SignedOut, useAuth } from "@clerk/nextjs";
 import { sidebarLinks } from "@/constants/constants";
+import React from "react";
 
 const LeftSidebar = () => {
   const { userId } = useAuth();
