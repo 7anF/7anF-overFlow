@@ -15,6 +15,7 @@ import AnswerTab from "@/components/shared/AnswerTab";
 const page = async ({ params, searchParams }: URLProps) => {
   const { userId } = auth();
   const userInfo = await getUserInfo({ userId: params.id });
+
   return (
     <>
       <div className="flex max-sm:flex-col-reverse justify-between items-start gap-5">
