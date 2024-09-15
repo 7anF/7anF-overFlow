@@ -78,7 +78,7 @@ const AllAnswers = async ({
                 </div>
               </div>
             </div>
-            <div className="markdown w-full min-w-full break-words">
+            <div className="markdown w-full min-w-full break-all">
               <ParseHTML data={answer.content} />
             </div>
           </article>

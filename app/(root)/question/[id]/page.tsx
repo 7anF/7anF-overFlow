@@ -85,7 +85,7 @@ const page = async ({ params, searchParams }: URLProps) => {
         />
       </div>
 
-      <div className="markdown w-full min-w-full break-words">
+      <div className="markdown w-full min-w-full break-all">
         <ParseHTML data={question.content} />
       </div>
 
