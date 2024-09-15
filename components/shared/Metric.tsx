@@ -5,8 +5,8 @@ import React from "react";
 interface Props {
   imgUlr: string;
   alt: string;
-  value: number | string;
-  title: string;
+  value?: number | string;
+  title?: string;
   textStyle?: string;
   href?: string;
   isAuthor?: boolean;
