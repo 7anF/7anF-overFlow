@@ -32,7 +32,7 @@ const Pagination = ({ pageNumber, isNext }: Props) => {
   return (
     <div className="flex w-full items-center justify-center gap-2">
       <Button
-        disabled={pageNumber == 1}
+        disabled={pageNumber === 1}
         onClick={() => handleNavigation("prev")}
         className="light-border-2 border btn flex min-h-[38px] items-center justify-center gap-2"
       >
