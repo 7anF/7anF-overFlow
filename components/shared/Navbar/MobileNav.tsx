@@ -21,7 +21,7 @@ export const NavContent = () => {
   let isActive = false;
 
   return (
-    <section className="flex h-full flex-col gap-6 pt-16">
+    <section className="flex flex-col gap-6 pt-16">
       {sidebarLinks.map((item) => {
         isActive =
           (pathname.includes(item.route) && item.route.length > 1) ||
@@ -84,7 +84,7 @@ const MobileNav = () => {
             Dev<span className="text-primary-500">Overflow</span>
           </p>
         </Link>
-        <div className="flex h-[calc(100vh-80px)] justify-between flex-col overflow-y-auto">
+        <div className="flex h-[calc(100vh-80px)] justify-between flex-col overflow-y-auto overflow-scroll">
           <SheetClose>
             <NavContent />
           </SheetClose>
